@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Application.VisitorRequests;
+using Application.Pets;
 
 namespace API.Extensions
 {

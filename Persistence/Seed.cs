@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Domain;
 
 namespace Persistence
@@ -9,16 +6,16 @@ namespace Persistence
     public class Seed
     {
           public static async Task SeedData(DataContext context){
-             if (context.VisitorRequests.Any()) return;
+             if (context.Pets.Any()) return;
 
-             var visitorRequests =  new List<VisitorRequest>{
-                new VisitorRequest{Title = "Visitor Request One", Description = "Description One"},
-                new VisitorRequest{Title = "Visitor Request Two", Description = "Description Two"},
-                new VisitorRequest{Title = "Visitor Request Three"},
-                new VisitorRequest{Title = "Visitor Request Four", Description = "Description Four"},
-                new VisitorRequest{Title = "Visitor Request Five", Description = "Description Five"},
+             var pets =  new List<Pet>{
+             new Pet{Name = "Snoopy", Type = "Beagle"},
+             new Pet{Name = "Garfield", Type = "Cat"},
+             new Pet{Name = "Tweety", Type = "Parakeet"},
+             new Pet{Name = "Bugs", Type = "Bunny"},
+             new Pet{Name = "Wile", Type = "Coyote"},
                 };
-            await context.VisitorRequests.AddRangeAsync(visitorRequests);
+            await context.Pets.AddRangeAsync(pets);   
             await context.SaveChangesAsync();
 
           }
