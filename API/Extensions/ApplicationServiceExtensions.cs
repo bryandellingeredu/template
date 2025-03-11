@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Application.VisitorRequests;
 
 namespace API.Extensions
 {
@@ -21,6 +22,7 @@ namespace API.Extensions
                 });
             });
 
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(List.Handler).Assembly));
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
