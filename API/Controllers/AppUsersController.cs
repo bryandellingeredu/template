@@ -10,8 +10,10 @@ namespace API.Controllers
         public async Task<IActionResult> Login()
         {
             var email = User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
+            var personId = User.FindFirstValue("custom:personId");
+            var loggedInUsing = User.FindFirstValue("custom:loggedInUsing");
             return HandleResult(await Mediator.Send(
-                new Login.Command { Email = email }));
+                new Login.Command { Email = email, PersonId = personId, LoggedInUsing = loggedInUsing }));
 
         }
     }

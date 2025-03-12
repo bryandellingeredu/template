@@ -11,13 +11,16 @@ namespace Application.AppUsers
         public class Command : IRequest<Result<AppUser>>
         {
             public string Email { get; set; }
+            public string PersonId { get; set; }    
+            public string LoggedInUsing { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<AppUser>>
         {
             public Task<Result<AppUser>> Handle(Command request, CancellationToken cancellationToken)
             {
-                return Task.FromResult(Result<AppUser>.Success(new AppUser { Email = request.Email }));
+                return Task.FromResult(Result<AppUser>.Success(
+                    new AppUser { Email = request.Email, PersonId = request.PersonId, LoggedInWith = request.LoggedInUsing }));
             }
         }
     }

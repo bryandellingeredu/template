@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { AppUser } from '../models/appUser';
+import {Pet} from '../models/pet.ts';
 import { store } from '../stores/stores';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
@@ -26,9 +27,17 @@ axios.interceptors.request.use((config) => {
     login: () => requests.post<AppUser>('/appusers/login', {}),
   }
 
+  const Pets = {
+    list: () => requests.get<Pet[]>('/pets'),
+    details: (id: string) => requests.get<Pet>(`/pets/${id}`),
+    createUpdate: (pet: Pet) => requests.post<void>('/pets', pet),
+    delete: (id: string) => requests.del<void>(`/pets/${id}`)
+  }
+
   
   const agent = {
-    AppUsers
+    AppUsers,
+    Pets
   }
 
   export default agent;
