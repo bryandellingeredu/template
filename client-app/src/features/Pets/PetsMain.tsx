@@ -1,20 +1,30 @@
 import { observer } from "mobx-react-lite";
-import { Container, Divider, Header, Icon, Table } from "semantic-ui-react";
+import { Button, Container, Divider, Header, Icon, Table } from "semantic-ui-react";
 import Navbar from "../../app/layout/Navbar";
 import { useStore } from "../../app/stores/stores";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDog } from "@fortawesome/free-solid-svg-icons"; // Import the dog icon
 import { useEffect } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
+import { useNavigate } from "react-router-dom";
 
 export default observer(function PetsMain() {
     const { petStore, responsiveStore } = useStore();
     const {isMobile} = responsiveStore
     const { pets,  petloading, loadPets } = petStore;
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (pets.length === 0) loadPets(); 
     }, [loadPets, pets.length]);
+
+    const handleNewPetButtonClick = () =>{
+        navigate('/petform');
+    }
+
+    const handleRowClick = (id: string) => {
+        navigate(`/petform/${id}`); 
+    };
 
        if (petloading) return <LoadingComponent content='loading data' />
 
@@ -22,6 +32,9 @@ export default observer(function PetsMain() {
         <>
         <Container fluid>
             <Navbar />
+            <div>
+                <Button color="brown" icon="plus" content="NEW PET" floated="right" size='large' onClick={handleNewPetButtonClick} style={{'marginRight': '20px'}}/>
+            </div>
             <Divider horizontal>
                 <Header as="h1" className="industry">
                 <FontAwesomeIcon icon={faDog} style={{ marginRight: "10px" }} />
@@ -30,7 +43,7 @@ export default observer(function PetsMain() {
             </Divider>
         </Container>
 
-        <Table celled>
+        <Table celled striped selectable>
         <Table.Header>
             <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
@@ -41,7 +54,10 @@ export default observer(function PetsMain() {
         <Table.Body>
             {pets.length > 0 ? (
                 pets.map((pet) => (
-                    <Table.Row key={pet.id}>
+                    <Table.Row key={pet.id}
+                    onClick={() => handleRowClick(pet.id)}
+                    style={{ cursor: "pointer" }} 
+                    >
                         <Table.Cell>{pet.name}</Table.Cell>
                         <Table.Cell>{pet.type}</Table.Cell>
                     </Table.Row>

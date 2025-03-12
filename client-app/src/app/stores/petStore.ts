@@ -33,6 +33,56 @@ export default class PetStore{
             runInAction(() => this.setPetLoading(false)); // Ensure loading state is updated
         }
     };
+
+    loadPet = async (id: string) => {
+        this.setPetLoading(true);
+        let pet = this.petRegistry.get(id);
+        if (pet){
+            this.setPetLoading(false);
+            return pet; 
+        } 
+        try {
+            pet = await agent.Pets.details(id); // Fetch pet from API
+            runInAction(() => {
+                if (pet) {
+                    this.petRegistry.set(pet.id, pet); 
+                }
+            });
+            return pet; 
+        } catch (error) {
+            console.error(`Error loading pet with ID ${id}:`, error);
+            toast.error("An error occurred while loading the pet");
+        } finally {
+            this.setPetLoading(false);
+        }
+    };
+
+    updateInsertPet = async (pet: Pet) => {
+        try{
+            await agent.Pets.createUpdate(pet);
+            runInAction(() => {
+                this.petRegistry.set(pet.id, pet);
+              });
+        }catch (error) {
+            console.error(`Error updating insert pet with id:  ${pet.id}:`, error);
+            toast.error("An error occurred while saving the pet");
+        }
+    }
+
+    deletePet = async (id: string) => {
+        try{
+           await agent.Pets.delete(id)
+           runInAction(() => {
+            this.petRegistry.delete(id);
+          });
+        }catch(error){
+            console.error(`Errored deleting pet with id:  ${id}:`, error);
+            toast.error("An error occurred while deleting the pet");
+        }
+     }
+    
+    
+
     
 
     setPetLoading = (state : boolean) => {
