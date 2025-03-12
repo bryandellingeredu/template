@@ -31,7 +31,8 @@ axios.interceptors.request.use((config) => {
     list: () => requests.get<Pet[]>('/pets'),
     details: (id: string) => requests.get<Pet>(`/pets/${id}`),
     createUpdate: (pet: Pet) => requests.post<void>('/pets', pet),
-    delete: (id: string) => requests.del<void>(`/pets/${id}`)
+    delete: (id: string) => requests.del<void>(`/pets/${id}`),
+    sendEmail: (id: string, email: string) => requests.post<void>('/pets/sendemail', {id, email})
   }
 
   

@@ -18,5 +18,9 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUpdatePet([FromBody] Pet pet) =>
             HandleResult(await Mediator.Send(new CreateUpdate.Command { Pet = pet }));
+
+        [HttpPost("sendemail")]
+        public async Task<IActionResult> SendEmail([FromBody] SendEmailDTO sendEmailDTO) =>
+        HandleResult(await Mediator.Send(new SendEmail.Command { SendEmailDTO = sendEmailDTO }));
     }
 }

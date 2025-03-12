@@ -4,6 +4,7 @@ using Application.Pets;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using Application.GraphHelper;
 
 namespace API.Extensions
 {
@@ -113,6 +114,7 @@ namespace API.Extensions
             });
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(List.Handler).Assembly));
+            services.AddScoped<IGraphHelperService, GraphHelperService>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

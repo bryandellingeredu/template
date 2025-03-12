@@ -15,6 +15,14 @@ export default observer(function PetsMain() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const redirectPath = localStorage.getItem("redirectToPath");
+        if (redirectPath) {
+          localStorage.removeItem("redirectToPath"); // Clear it from local storage
+          navigate(`/${redirectPath}`); // Navigate to the stored path
+        }
+      }, [navigate]);
+
+    useEffect(() => {
         if (pets.length === 0) loadPets(); 
     }, [loadPets, pets.length]);
 

@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Graph" Version="5.73.0" />
   </ItemGroup>
 
   <ItemGroup>

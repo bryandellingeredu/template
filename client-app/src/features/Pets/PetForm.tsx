@@ -7,11 +7,13 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Button, ButtonGroup, Container, Divider, Form, Header, Icon, Popup } from "semantic-ui-react";
 import Navbar from "../../app/layout/Navbar";
 import { toast } from "react-toastify";
+import SendEmailModal from "./SendEmailModal";
 
 
 export default observer(function PetForm() {
     const { id } = useParams();
-    const { petStore,} = useStore();
+    const { petStore, modalStore} = useStore();
+    const {openModal} = modalStore;
     const { petloading, loadPet, updateInsertPet, deletePet } = petStore;
     const navigate = useNavigate();
     const [petId] = useState(id || uuidv4());
@@ -57,6 +59,12 @@ export default observer(function PetForm() {
           setDeleting(false);
         }
     };
+
+    const handleSendEmailButtonClick = () =>{
+        openModal(
+          <SendEmailModal id={id!} />, 'fullscreen'
+        )
+      }
 
     const handleSubmit = async () => {
         setSubmitted(true);
@@ -130,7 +138,8 @@ export default observer(function PetForm() {
               CANCEL
             </Button>
           
-
+             {id && 
+             <>
               <Popup
                   trigger={
                           <Button icon color='red' type='button'   labelPosition="right" onClick={() => setOpen(true)}  loading={deleting}>
@@ -154,6 +163,18 @@ export default observer(function PetForm() {
                         </div>
                         }
                         />
+                        <Button type="button"
+                        color="olive"
+                        icon
+                        labelPosition="right"
+                        onClick={handleSendEmailButtonClick}
+                        >
+                         <Icon name="envelope" size="large" />
+             
+                            SEND EMAIL
+                        </Button>
+                    </>
+                    }
 
            <Button
               type="submit"
