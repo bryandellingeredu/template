@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Application.GraphHelper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace API.Extensions
 {
@@ -112,10 +114,16 @@ namespace API.Extensions
                     }
                 };
             });
-
+            services.AddAuthorization();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(List.Handler).Assembly));
             services.AddScoped<IGraphHelperService, GraphHelperService>();
-            services.AddControllers();
+            services.AddControllers(options =>
+        {
+            var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+            options.Filters.Add(new AuthorizeFilter(policy)); // Apply globally
+        });
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             return services;
