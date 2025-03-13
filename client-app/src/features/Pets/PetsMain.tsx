@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Container, Divider, Header, Icon, Table } from "semantic-ui-react";
+import { Button, Container, Divider, Header,  Table } from "semantic-ui-react";
 import Navbar from "../../app/layout/Navbar";
 import { useStore } from "../../app/stores/stores";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
