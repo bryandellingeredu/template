@@ -58,11 +58,8 @@ When it is done it will give you a url of https://localhost:3000/template  put t
 
 Let me know if you have any problems.
 
+## To publish
+`npm run build` in the `client-app` folder
 
-
-
-
-
-
-
+`dotnet publish -c Release -o ./bin/Publish` in the `api` folder. (Change `./bin/Publish` to whatever folder you wish to publish to.)
 
