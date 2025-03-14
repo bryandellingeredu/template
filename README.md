@@ -88,6 +88,61 @@ replace endingMigration with the name of the last migration in the migrations fo
 
 again this will create you a script to send to Jason Enders.
 
+## HOW TO MAKE DATABASE CHANGES
+for quick reference here are four useful commands I will reference in this section
+
+MAKE SURE YOUR appsettings.development.json is pointed to localdb before running any of these commands!
+
+1. `dotnet ef migrations add nameofyournewmigration -s API -p Persistence`    replace nameofyournewmigration  run this at the project level (one directory above api)     this commands creates a migration
+
+2. `dotnet ef database update` (at api level)      this command will take your changes from the migration and update your local database.
+
+3. `dotnet ef database drop --force (at api level)`  run this command if you want to totally delete the local database and start over.
+
+4. `dotnet ef migrations script StartingMigration endingMigration -o MigrationsScript.sql --context DataContext`   this will create the database script to send to Jason Enders.
+
+Here are the steps if you need make a database change and you are using Entity Framework Core Code First.
+
+1. Make the change in the Domain Folder of the project  (make sure you also make the change in the models folder in client app remember first letter lowercase in the model.ts and uppercase in the c# class)
+2. If you added a new class to the Domain Folder of the project and you want it to appear as a table in the database make sure it is included in the  DataContext file located in the Persistence Folder
+3. create a migration for your change  in the terminal in vs code at the project level (one directory above api)  run the command  `dotnet ef migrations add nameofyournewmigration -s API -p Persistence`
+4. to update your local database from the migration cd into the api in your terminal and run   `dotnet ef database update`
+5. when you are all done and ready to deploy run   `dotnet ef migrations script StartingMigration endingMigration -o MigrationsScript.sql --context DataContext`  and send the script to Jason Enders.
+
+   If for some reason the migration doesn't work and you just want to trash the whole local db and start over here are the steps (DON'T DO THIS IF YOU HAVE ALREADY DEPLOYED YOUR APP  TO PROD)
+
+      1. delete the entire migration folder located in persistence.
+      2. delete your local database by running  `dotnet ef database drop --force  at the api level
+      3. create an initial migration one level above api   `dotnet ef migrations add initial -s API -p Persistence`
+      4. at the api level run  `dotnet ef database update`    your local database should now have been dropped and recreated.
+
+
+   
+## I DON'T WANT TO CREATE A NEW DATABASE, I WANT TO PUT MY NEW TABLES IN AN EXISTING DATABASE LIKE CIO BUT IN A NEW SCHEMA
+
+If you want the tables for your new app to be created with a schema so that when you send the script to Jason he can just run it in an existing database like CIO,  
+add this method to the `DataContext.cs` file located in the `Persistence` folder, replacing `"myschemaname"` with the name of your schema (leave the quotes).  
+For example, if your app was named `usawcvisitors`, you would use `"usawcvisitors"`.
+
+```csharp
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    base.OnModelCreating(modelBuilder);
+    // Set default schema
+    modelBuilder.HasDefaultSchema("myschemaname");
+}
+
+   
+
+   
+
+    
+     
+     
+        
+`
+
+
 
 
 
