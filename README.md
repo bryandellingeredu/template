@@ -59,7 +59,38 @@ When it is done it will give you a url of https://localhost:3000/template  put t
 Let me know if you have any problems.
 
 ## To publish
-`npm run build` in the `client-app` folder
+if you have not done so  already ask Lisa Olson and or Rich Levendowski to create a subdirectory in \\awc-dev-app1  and \\awc-prod-app1  named the same name as your project (in this case template)
+
+let them know it is a .net 8 app and to set the app pool to No Managed Code.
+
+`npm run build` in the `client-app` folder  (this will package the react application in place the whole thing in the api wwwroot folder)
 
 `dotnet publish -c Release -o ./bin/Publish` in the `api` folder. (Change `./bin/Publish` to whatever folder you wish to publish to.)
+
+place the contents of your published folder into the corresponding dev folder on awc \\awc-dev-app1  so for this example it would be \\awc-dev-app1\template
+
+ask Lisa Olsen and or Richard Levandusky to sync your files to prod (they prefer you communicate with them via edu teams)
+
+## Database
+
+if you are creating a new database for your app ask Jason Enders to make you a new database in both awc dev on aws and awc prod on aws,  if you are adding your tables to an existing database you may skip this step
+
+make sure appsettings.json has the default connection string set to the credentials Jason will provide you (appsettings.development.json will continue to have the local db connection string)
+
+if this is your first deployment, to make the database script, in the vs code terminal make sure you are in api (cd api) and run `dotnet ef migrations script --context DataContext -o MigrationsScript.sql`
+
+this will make you a file called MigrationsScript.sql you can send that file to Jason Enders and ask him to run it in dev and prod.
+
+if this is not the first deployment and you made a database change you only want to send Jason the changes so this time run
+`dotnet ef migrations script StartingMigration endingMigration -o MigrationsScript.sql --context DataContext`
+replace startingMigration with the name of the last migration before you made any changes. this can be found in the persistence folder in the migrations folder
+replace endingMigration with the name of the last migration in the migrations folder.
+
+again this will create you a script to send to Jason Enders.
+
+
+
+
+  
+
 
